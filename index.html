@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZMAX - إجابات دروس JavaScript</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #2d6bc4;
+            --accent-color: #00b4d8;
+            --light-color: #f8fafc;
+            --dark-color: #1e293b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --gradient-primary: linear-gradient(135deg, #1a365d 0%, #2d6bc4 100%);
+            --gradient-accent: linear-gradient(135deg, #00b4d8 0%, #2d6bc4 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Cairo', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.7;
+            min-height: 100vh;
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* الهيدر المحسن */
+        .main-header {
+            background: var(--gradient-primary);
+            padding: 25px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            border-bottom: 4px solid var(--accent-color);
+        }
+        
+        .main-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            background: var(--gradient-accent);
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 15px rgba(0, 180, 216, 0.3);
+        }
+        
+        .logo-icon i {
+            font-size: 28px;
+            color: white;
+        }
+        
+        .logo-text {
+            color: white;
+        }
+        
+        .logo-text h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 5px;
+        }
+        
+        .logo-text .tagline {
+            font-size: 1rem;
+            color: #dbeafe;
+            font-weight: 300;
+        }
+        
+        .zmax-badge {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 10px 25px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: 600;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* المحتوى الرئيسي */
+        .main-content {
+            padding: 50px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        
+        @media (max-width: 1100px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .section-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border: 1px solid #e2e8f0;
+            height: fit-content;
+        }
+        
+        .section-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .section-header {
+            background: var(--gradient-primary);
+            padding: 25px 30px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .section-header i {
+            font-size: 24px;
+            color: var(--accent-color);
+        }
+        
+        .section-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .section-body {
+            padding: 30px;
+        }
+        
+        /* تصميم الدرس */
+        .lesson {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .lesson:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .lesson-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .lesson-title i {
+            color: var(--secondary-color);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #64748b;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            color: #e2e8f0;
+            margin-bottom: 20px;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.8rem;
+            color: #94a3b8;
+            margin-bottom: 15px;
+        }
+        
+        /* قسم المراجعة */
+        .review-item {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .review-item:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 25px rgba(0, 180, 216, 0.1);
+        }
+        
+        .review-question {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .question-number {
+            background: var(--accent-color);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        
+        .review-answer {
+            font-family: 'Courier New', monospace;
+            background: #f0f9ff;
+            padding: 18px;
+            border-radius: 10px;
+            color: var(--secondary-color);
+            font-weight: 600;
+            border-right: 4px solid var(--accent-color);
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+        
+        .review-set-title {
+            font-size: 1.6rem;
+            color: var(--primary-color);
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .review-set-title:first-child {
+            margin-top: 0;
+        }
+        
+        .review-set-title i {
+            color: var(--accent-color);
+        }
+        
+        /* قسم التعليمات */
+        .instructions {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 50px 0;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+            border-top: 5px solid var(--accent-color);
+        }
+        
+        .instructions h3 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .instructions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .instruction-card {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .instruction-card:hover {
+            background: #f0f9ff;
+            transform: translateY(-5px);
+        }
+        
+        .instruction-card i {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+        
+        .instruction-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        /* الفوتر */
+        .main-footer {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 50px;
+            border-top: 4px solid var(--accent-color);
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .prayer-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #dbeafe;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .copyright {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        
+        /* رسالة النسخ */
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: var(--success-color);
+            color: white;
+            padding: 18px 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            z-index: 1000;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .copy-btn {
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(0, 180, 216, 0.3);
+            margin-top: 15px;
+        }
+        
+        .copy-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 180, 216, 0.4);
+        }
+        
+        /* تحسينات للجوّال */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 25px;
+                text-align: center;
+            }
+            
+            .logo-text h1 {
+                font-size: 2rem;
+            }
+            
+            .section-body {
+                padding: 20px;
+            }
+            
+            .instructions {
+                padding: 25px;
+            }
+            
+            .instructions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .review-answer {
+                font-size: 0.9rem;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الهيدر -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <div class="logo-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>ZMAX</h1>
+                        <p class="tagline">منصة التعلم التفاعلي المتقدم</p>
+                    </div>
+                </div>
+                <div class="zmax-badge">
+                    <i class="fas fa-star"></i> النسخة الاحترافية
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- المحتوى الرئيسي -->
+    <div class="container">
+        <div class="main-content">
+            <!-- قسم الدروس -->
+            <section class="section-card">
+                <div class="section-header">
+                    <i class="fas fa-book-open"></i>
+                    <h2>دروس JavaScript</h2>
+                </div>
+                <div class="section-body">
+                    <div class="empty-state">
+                        <i class="fas fa-code-branch"></i>
+                        <h3>إجابات الدروس تحت التحديث</h3>
+                        <p>يتم حاليًا تحديث إجابات دروس JavaScript. يمكنك الاطلاع على إجابات المراجعة في القسم المجاور.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- قسم المراجعة -->
+            <section class="section-card">
+                <div class="section-header">
+                    <i class="fas fa-clipboard-check"></i>
+                    <h2>إجابات المراجعة</h2>
+                </div>
+                <div class="section-body">
+                    <h3 class="review-set-title"><i class="fas fa-list-ol"></i> مراجعة 22</h3>
+                    
+                    <div class="review-item">
+                        <div class="review-question">
+                            <div class="question-number">1</div>
+                            <span>أي كلمة أساسية تستخدم لإنشاء حلقة for؟</span>
+                        </div>
+                        <div class="review-answer">for</div>
+                        <button class="copy-btn" data-answer="for">
+                            <i class="far fa-copy"></i> نسخ الإجابة
+                        </button>
+                    </div>
+                    
+                    <div class="review-item">
+                        <div class="review-question">
+                            <div class="question-number">2</div>
+                            <span>ما هي طريقة زيادة قيمة المتغير l بواحد؟</span>
+                        </div>
+                        <div class="review-answer">l++</div>
+                        <button class="copy-btn" data-answer="l++">
+                            <i class="far fa-copy"></i> نسخ الإجابة
+                        </button>
+                    </div>
+                    
+                    <div class="review-item">
+                        <div class="review-question">
+                            <div class="question-number">3</div>
+                            <span>اكتب بناء حلقة for التي تتكرر 10 مرات وتنفذ عملية محددة.</span>
+                        </div>
+                        <div class="review-answer">for (let i = 0; i < 10; i++) {
+    specified process;
+}</div>
+                        <button class="copy-btn" data-answer="for (let i = 0; i < 10; i++) { specified process; }">
+                            <i class="far fa-copy"></i> نسخ الإجابة
+                        </button>
+                    </div>
+                    
+                    <div class="review-item">
+                        <div class="review-question">
+                            <div class="question-number">4</div>
+                            <span>أكمل بناء حلقة for التالية: for (_______)</span>
+                        </div>
+                        <div class="review-answer">let i = 0; i < 3; i++</div>
+                        <button class="copy-btn" data-answer="let i = 0; i < 3; i++">
+                            <i class="far fa-copy"></i> نسخ الإجابة
+                        </button>
+                    </div>
+                    
+                    <div class="review-item">
+                        <div class="review-question">
+                            <div class="question-number">5</div>
+                            <span>اكتب كود JavaScript الذي يطبع "Good morning" 7 مرات باستخدام حلقة for.</span>
+                        </div>
+                        <div class="review-answer">for (let i = 0; i < 7; i++) {
+  console.log("Good morning");
+}</div>
+                        <button class="copy-btn" data-answer="for (let i = 0; i < 7; i++) { console.log('Good morning'); }">
+                            <i class="far fa-copy"></i> نسخ الإجابة
+                        </button>
+                    </div>
+                    
+                    <div class="review-item">
+                        <div class="review-question">
+                            <div class="question-number">6</div>
+                            <span>ماذا يحدث إذا وضعنا i+1 بدلاً من i++ في قسم التحديث في حلقة for؟</span>
+                        </div>
+                        <div class="review-answer">يؤدي إلي خطأ؟</div>
+                        <button class="copy-btn" data-answer="يؤدي إلي خطأ؟">
+                            <i class="far fa-copy"></i> نسخ الإجابة
+                        </button>
+                    </div>
+                    
+                    <div class="review-item">
+                        <div class="review-question">
+                            <div class="question-number">7</div>
+                            <span>اكتب كود JavaScript الذي يتحقق مما إذا كانت i تساوي 4 وفي هذه الحالة يطبع "End".</span>
+                        </div>
+                        <div class="review-answer">if (i == 4) {
+    console.log("End");
+  }</div>
+                        <button class="copy-btn" data-answer="if (i == 4) { console.log('End'); }">
+                            <i class="far fa-copy"></i> نسخ الإجابة
+                        </button>
+                    </div>
+                    
+                    <div class="review-item">
+                        <div class="review-question">
+                            <div class="question-number">8</div>
+                            <span>ما هو الناتج من الكود التالي: for (let i=0; i<4; i++) { if (i%2==0) console.log("A"); else console.log("B"); }</span>
+                        </div>
+                        <div class="review-answer">AABA</div>
+                        <button class="copy-btn" data-answer="AABA">
+                            <i class="far fa-copy"></i> نسخ الإجابة
+                        </button>
+                    </div>
+                    
+                    <div class="review-item">
+                        <div class="review-question">
+                            <div class="question-number">9</div>
+                            <span>كيف نزيد قيمة i بمقدار 2 في كل تكرار في حلقة for؟</span>
+                        </div>
+                        <div class="review-answer">i+=2</div>
+                        <button class="copy-btn" data-answer="i+=2">
+                            <i class="far fa-copy"></i> نسخ الإجابة
+                        </button>
+                    </div>
+                    
+                    <h3 class="review-set-title"><i class="fas fa-list-ol"></i> مراجعة 23</h3>
+                    
+                    <div class="review-item">
+                        <div class="review-question">
+                            <div class="question-number">1</div>
+                            <span>كيف نعلن عن دالة تسمى move؟</span>
+                        </div>
+                        <div class="review-answer">function move() {
+  Program to Run
+}</div>
+                        <button class="copy-btn" data-answer="function move() { Program to Run }">
+                            <i class="far fa-copy"></i> نسخ الإجابة
+                        </button>
+                    </div>
+                    
+                    <div class="review-item">
+                        <div class="review-question">
+                            <div class="question-number">2</div>
+                            <span>ما هي نتيجة استدعاء الدالة التالية: function sum() { return 22 + 33; }</span>
+                        </div>
+                        <div class="review-answer">55</div>
+                        <button class="copy-btn" data-answer="55">
+                            <i class="far fa-copy"></i> نسخ الإجابة
+                        </button>
+                    </div>
+                    
+                    <div class="review-item">
+                        <div class="review-question">
+                            <div class="question-number">3</div>
+                            <span>ما هي نتيجة الكود التالي: function triple(x) { return x * 3; } console.log(triple(10));</span>
+                        </div>
+                        <div class="review-answer">30</div>
+                        <button class="copy-btn" data-answer="30">
+                            <i class="far fa-copy"></i> نسخ الإجابة
+                        </button>
+                    </div>
+                    
+                    <div class="review-item">
+                        <div class="review-question">
+                            <div class="question-number">4</div>
+                            <span>كيف نستدعي الدالة divide5() مع تمرير القيمة 35 وطباعة النتيجة؟</span>
+                        </div>
+                        <div class="review-answer">console.log(divide5(35));</div>
+                        <button class="copy-btn" data-answer="console.log(divide5(35));">
+                            <i class="far fa-copy"></i> نسخ الإجابة
+                        </button>
+                    </div>
+                    
+                    <div class="review-item">
+                        <div class="review-question">
+                            <div class="question-number">5</div>
+                            <span>ماذا يحدث إذا قمنا باستدعاء دالة غير معرّفة؟</span>
+                        </div>
+                        <div class="review-answer">ينتج عنه خطا</div>
+                        <button class="copy-btn" data-answer="ينتج عنه خطا">
+                            <i class="far fa-copy"></i> نسخ الإجابة
+                        </button>
+                    </div>
+                    
+                    <div class="review-item">
+                        <div class="review-question">
+                            <div class="question-number">6</div>
+                            <span>اكتب دالة تسمى goodNight تقوم بإرجاع "Good night!" ثم استدعِها واطبع النتيجة.</span>
+                        </div>
+                        <div class="review-answer">function goodNight() {
+  let greeting = "Good night!";
+  return greeting;
+}
+console.log(goodNight());</div>
+                        <button class="copy-btn" data-answer="function goodNight() { let greeting = 'Good night!'; return greeting; } console.log(goodNight());">
+                            <i class="far fa-copy"></i> نسخ الإجابة
+                        </button>
+                    </div>
+                    
+                    <div class="review-item">
+                        <div class="review-question">
+                            <div class="question-number">7</div>
+                            <span>كيف نستدعي الدالة mul() مع تمرير القيمتين 9 و 7 وطباعة النتيجة؟</span>
+                        </div>
+                        <div class="review-answer">console.log(mul(9, 7));</div>
+                        <button class="copy-btn" data-answer="console.log(mul(9, 7));">
+                            <i class="far fa-copy"></i> نسخ الإجابة
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- قسم التعليمات -->
+        <section class="instructions">
+            <h3><i class="fas fa-info-circle"></i> كيفية استخدام المنصة</h3>
+            <p>منصة ZMAX تقدم تجربة تعلم احترافية مع إمكانيات متقدمة. اتبع هذه التعليمات للاستفادة القصوى:</p>
+            
+            <div class="instructions-grid">
+                <div class="instruction-card">
+                    <i class="fas fa-copy"></i>
+                    <h4>نسخ الإجابات</h4>
+                    <p>انقر على زر "نسخ الإجابة" لأي سؤال لنسخ الإجابة إلى الحافظة مباشرة.</p>
+                </div>
+                
+                <div class="instruction-card">
+                    <i class="fas fa-laptop-code"></i>
+                    <h4>تطبيق عملي</h4>
+                    <p>استخدم الإجابات في مشاريعك البرمجية أو محرر JavaScript المفضل لديك.</p>
+                </div>
+                
+                <div class="instruction-card">
+                    <i class="fas fa-search"></i>
+                    <h4>تصفح سهل</h4>
+                    <p>جميع إجابات المراجعة مرتبة تسلسليًا لتسهيل عملية التعلم والمراجعة.</p>
+                </div>
+                
+                <div class="instruction-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h4>تصميم متجاوب</h4>
+                    <p>المنصة تعمل بكفاءة على جميع الأجهزة من حواسيب وهواتف وأجهزة لوحية.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- الفوتر -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="prayer-text">صلِّ على سيدنا محمد</div>
+                <div class="copyright">
+                    <p>ZMAX - منصة التعلم التفاعلي المتقدم</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- رسالة النسخ -->
+    <div class="notification" id="copyNotification">
+        <i class="fas fa-check-circle"></i>
+        <span>تم نسخ الإجابة بنجاح!</span>
+    </div>
+
+    <script>
+        // وظيفة نسخ الإجابات
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const answerText = this.getAttribute('data-answer');
+                
+                // استخدام Clipboard API الحديث
+                navigator.clipboard.writeText(answerText).then(() => {
+                    showNotification();
+                }).catch(err => {
+                    // الطريقة البديلة للمتصفحات القديمة
+                    const textArea = document.createElement('textarea');
+                    textArea.value = answerText;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showNotification();
+                });
+                
+                // تأثير على الزر
+                const originalHTML = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-check"></i> تم النسخ!';
+                this.style.background = 'linear-gradient(135deg, #10b981 0%, #34d399 100%)';
+                
+                setTimeout(() => {
+                    this.innerHTML = originalHTML;
+                    this.style.background = 'linear-gradient(135deg, #00b4d8 0%, #2d6bc4 100%)';
+                }, 2000);
+            });
+        });
+        
+        // عرض إشعار النسخ
+        function showNotification() {
+            const notification = document.getElementById('copyNotification');
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // تأثيرات التمرير
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // مراقبة العناصر لإضافة تأثيرات الظهور
+        document.querySelectorAll('.review-item, .instruction-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+        
+        // تهيئة بعض العناصر عند التحميل
+        window.addEventListener('DOMContentLoaded', () => {
+            // إضافة تأثيرات تدريجية للعناوين
+            const titles = document.querySelectorAll('.review-set-title, .empty-state h3');
+            titles.forEach((title, index) => {
+                setTimeout(() => {
+                    title.style.opacity = '1';
+                    title.style.transform = 'translateX(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
